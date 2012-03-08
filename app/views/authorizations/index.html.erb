@@ -1,0 +1,25 @@
+<h1>Listing authorizations</h1>
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Token</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @authorizations.each do |authorization| %>
+  <tr>
+    <td><%= authorization.key %></td>
+    <td><%= authorization.token %></td>
+    <td><%= link_to 'Show', authorization %></td>
+    <td><%= link_to 'Edit', edit_authorization_path(authorization) %></td>
+    <td><%= link_to 'Destroy', authorization, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Authorization', new_authorization_path %>

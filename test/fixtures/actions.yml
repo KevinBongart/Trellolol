@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  card_id: 1
+  trello_id: MyString
+  list_before: MyString
+  list_after: MyString
+
+two:
+  card_id: 1
+  trello_id: MyString
+  list_before: MyString
+  list_after: MyString
