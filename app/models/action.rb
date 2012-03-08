@@ -28,7 +28,7 @@ class Action < ActiveRecord::Base
         :trello_id => data['id'],
         :card_id => card.id,
         :list_before_trello_id => data['data']['listBefore']['id'],
-        :list_after_trello_id => data['data']['listBefore']['id'],
+        :list_after_trello_id => data['data']['listAfter']['id'],
         :date => data['date'].to_time
       )
     end

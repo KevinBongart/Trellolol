@@ -6,8 +6,8 @@ task :import => :environment do
     if board = Board.find_by_trello_id(b['id'])
       p "Board #{b['id']}: found"
     else
-      Board.create_from_trello_data(b)
-      p "Board #{b['id']}: created"
+      board = Board.create_from_trello_data(b)
+      p "Board #{b['id']}: created" if board
     end
   end
 

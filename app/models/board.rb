@@ -2,7 +2,7 @@ class Board < ActiveRecord::Base
   has_many :lists
 
   def self.create_from_trello_data(data)
-    Board.create(:trello_id => data['id'], :name => data['name'])
+    Board.create(:trello_id => data['id'], :name => data['name']) unless data['name'] == 'Welcome Board'
   end
 
   def self.fetch_from_trello

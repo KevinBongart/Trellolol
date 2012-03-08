@@ -22,4 +22,13 @@ class Card < ActiveRecord::Base
 
     response
   end
+
+  def completed?
+    self.actions.last.list_after && self.actions.last.list_after.name.match('Completed')
+  end
+
+  def time_to_completion
+    return unless completed?
+    self.actions.first.date - self.actions.last.date
+  end
 end

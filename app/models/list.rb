@@ -20,4 +20,8 @@ class List < ActiveRecord::Base
 
     response
   end
+
+  def name
+    super.gsub(/ \(.*\)/, "").strip
+  end
 end
