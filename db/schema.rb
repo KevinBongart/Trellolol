@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120308172252) do
+ActiveRecord::Schema.define(:version => 20120309203449) do
 
   create_table "actions", :force => true do |t|
     t.integer  "card_id"
@@ -50,13 +50,8 @@ ActiveRecord::Schema.define(:version => 20120308172252) do
     t.integer  "board_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "trello_boards", :force => true do |t|
-    t.string   "name"
-    t.string   "desc"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "total_time"
+    t.integer  "count"
   end
 
 end

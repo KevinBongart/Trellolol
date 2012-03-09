@@ -20,4 +20,27 @@ class Board < ActiveRecord::Base
 
     response['boards']
   end
+
+  def self.compute_list_average_time
+    lists = {}
+    List.all.each do |list|
+      lists[list.id] = { :total_time => 0, :count => 0 }
+    end
+
+    Card.all.each do |card|
+      previous_action = nil
+      card.actions.each do |action|
+        if previous_action
+          time = action.date - previous_action.date
+          lists[action.list_before.id][:total_time] += time.to_i
+          lists[action.list_before.id][:count]      += 1
+        end
+        previous_action = action
+      end
+    end
+
+    List.all.each do |list|
+      list.update_attributes(:total_time => lists[list.id][:total_time], :count => lists[list.id][:count])
+    end
+  end
 end

@@ -1,42 +1,14 @@
-<h2>Cards</h2>
-
-<% Card.all.each do |card| %>
-  <%= card.name %>
-  <% previous_action = nil %>
-  <ul>
-    <% card.actions.each do |action| %>
-      <% if action.list_created_in %>
-        <li>created in <%= action.list_created_in.name %></li>
-      <% else %>
-        <% if previous_action %>
-          <% time = action.date - previous_action.date %>
-          <% @lists[action.list_before.id][:total_time] += time.to_i %>
-          <% @lists[action.list_before.id][:count]      += 1 %>
-          <li>
-            stayed <strong><%= distance_of_time_in_words(time) %> in <%= action.list_before.name %></strong>,
-            then moved to <%= action.list_after.name %>
-          </li>
-        <% end %>
-      <% end %>
-      <% previous_action = action %>
-    <% end %>
-
-    <% if card.completed? %>
-      <li>was completed in <%= distance_of_time_in_words(card.time_to_completion) %></li>
-    <% end %>
-  </ul>
-<% end %>
-
 <h2>Average time in each column</h2>
+
 <% Board.all.each do |board| %>
   <%= board.name %>
   <ul>
     <% board.lists.each do |list| %>
-      <% unless @lists[list.id][:count].zero? %>
+      <% unless list.count.zero? %>
         <li>
           Average time in
           <strong><%= list.name %></strong>:
-          <%= distance_of_time_in_words(@lists[list.id][:total_time] / @lists[list.id][:count]) %>
+          <%= distance_of_time_in_words(list.total_time / list.count) %>
         </li>
       <% end %>
     <% end %>
