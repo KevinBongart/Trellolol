@@ -30,7 +30,7 @@ class Board < ActiveRecord::Base
     Card.all.each do |card|
       previous_action = nil
       card.actions.each do |action|
-        if previous_action
+        if previous_action && action.list_before
           time = action.date - previous_action.date
           lists[action.list_before.id][:total_time] += time.to_i
           lists[action.list_before.id][:count]      += 1
