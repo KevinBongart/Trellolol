@@ -1,3 +1,4 @@
+desc "Import data from your Trello account"
 task :import => :environment do
   require "net/https"
   require "uri"
