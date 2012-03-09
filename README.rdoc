@@ -8,8 +8,13 @@ So far, it only gives you the average time cards spend in each list of each boar
 
 == Usage
 
-1. After having git-cloned, bundle-installed and rake-db-migrated this app, go to http://localhost:3000/authorizations to add your Trello tokens (you can find them at https://trello.com/1/appKey/generate).
+1. Git clone, bundle install and rake db:migrate this app
+2. Go to https://trello.com/1/appKey/generate to generate your API key and click on the "Click here" link in the "Reading Private Data" section to request a token.
+3. Add your Trello your key and your token on http://localhost:3000/authorizations
+4. Run <tt>rake import</tt> to IMPORT ALL THE DATAS!!1
+5. Run <tt>rails s</tt>
+6. Go to http://localhost:3000/ and you'll see what you were looking for.
 
-2. Run <tt>rake import</tt> to IMPORT ALL THE DATAS!!1
+== Todo
 
-3. Go to http://localhost:3000/ and you'll see what you were looking for.
+Get the API key and token via OAuth. Colors. Cumulative flow diagram. Tag cloud. Web 2.0. MySpace integration. TPS reports.
