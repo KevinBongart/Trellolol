@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  metric_group_id: 1
+  list_id: 1
+  cards_count: 1
+
+two:
+  metric_group_id: 1
+  list_id: 1
+  cards_count: 1

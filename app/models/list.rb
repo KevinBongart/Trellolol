@@ -1,5 +1,6 @@
 class List < ActiveRecord::Base
   belongs_to :board
+  has_many :metrics
 
   def self.create_from_trello_data(data, board)
     List.create(:trello_id => data['id'], :name => data['name'], :board_id => board.id)
@@ -9,7 +10,7 @@ class List < ActiveRecord::Base
     auth = Authorization.first
     base_url = "https://api.trello.com/1/"
     tokens   = "&key=#{auth.key}&token=#{auth.token}"
-    params   = "boards/#{board.trello_id}/lists?"
+    params   = "boards/#{board.trello_id}/lists?filter=all"
 
     uri = URI.parse(base_url + params + tokens)
     http = Net::HTTP.new(uri.host, uri.port)

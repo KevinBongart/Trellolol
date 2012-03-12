@@ -4,11 +4,19 @@
   <title>Trellolol</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "http://code.highcharts.com/highcharts.js" %>
+  <%= javascript_include_tag "http://code.highcharts.com/modules/exporting.js" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
 <%= yield %>
+
+<%= javascript_tag do %>
+  $(function() {
+    <%= yield :javascript %>
+  });
+<% end %>
 
 </body>
 </html>

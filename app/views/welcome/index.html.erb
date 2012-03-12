@@ -1,7 +1,10 @@
-<h2>Average time in each column</h2>
-
 <% Board.all.each do |board| %>
-  <%= board.name %>
+  <h2><%= board.name %></h2>
+
+  <div id='<%= "container_#{board.id}" %>' style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+  <h3>Average time in each column</h3>
+
   <ul>
     <% board.lists.each do |list| %>
       <% unless list.count.zero? %>
@@ -13,4 +16,61 @@
       <% end %>
     <% end %>
   </ul>
+
+  <% content_for :javascript do %>
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: "container_<%= board.id %>",
+          type: 'area'
+        },
+        title: {
+          text: "Cumulative flow diagram for <%= board.name %> board"
+        },
+        xAxis: {
+          categories: <%= array_or_string_for_javascript(@data[board.id]['categories']) %>,
+          tickmarkPlacement: 'on',
+          title: {
+            enabled: false
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'Cards'
+          },
+          labels: {
+            formatter: function() {
+              return this.value;
+            }
+          }
+        },
+        tooltip: {
+          formatter: function() {
+            return ''+
+            this.x +': '+ Highcharts.numberFormat(this.y, 0, ',') +' cards';
+          }
+        },
+        plotOptions: {
+          area: {
+            stacking: 'normal',
+            lineColor: '#666666',
+            lineWidth: 1,
+            marker: {
+              lineWidth: 1,
+              lineColor: '#666666'
+            }
+          }
+        },
+        series: [
+          <% @data[board.id]['series'].each do |serie| %>
+            {
+              name: "<%= serie['name'] %>",
+              data: [<%= serie['data'].join(",") %>]
+            },
+          <% end %>
+        ]
+        });
+      });
+  <% end %>
 <% end %>
