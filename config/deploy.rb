@@ -26,10 +26,11 @@ set :whenever_command, "bundle exec whenever"
 
 namespace :deploy do
   task :start do
-    run "cd #{current} && bundle exec rails s -p 3001 -d"
+    run "cd #{current} && bundle exec rails server --binding=127.0.0.1 --port=3001 --daemon --environment=production thin"
   end
   task :stop do
-    run "cd #{current} && if [ -f #{pid_file} ]; then kill -KILL $(cat #{pid_file}); fi"
+    # send KILL signal to process named ruby owned by user
+    run "pkill -KILL -u #{user} ruby"
   end
   task :restart, :roles => :app, :except => { :no_release => true } do
     stop

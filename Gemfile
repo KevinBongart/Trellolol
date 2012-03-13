@@ -27,6 +27,7 @@ group :development do
   gem 'capistrano'
 end
 
+gem 'thin'
 gem 'jquery-rails'
 gem 'whenever'
 
