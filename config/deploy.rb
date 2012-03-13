@@ -38,12 +38,6 @@ namespace :deploy do
   end
 end
 
-namespace :assets do
-  task :precompile do
-    run "cd #{current} && RAILS_ENV=production bundle exec rake assets:precompile"
-  end
-end
-
 namespace :logs do
   task :watch do
     stream("tail -f #{deploy_to}/shared/log/production.log")
@@ -51,5 +45,4 @@ namespace :logs do
 end
 
 before "deploy:start", "deploy:migrate"
-before "deploy:start", "assets:precompile"
 after "deploy:start", "deploy:cleanup"
