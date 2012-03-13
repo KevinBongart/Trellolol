@@ -14,20 +14,21 @@ set :deploy_via, :remote_cache
 ssh_options[:forward_agent] = true
 
 set :deploy_to, "/home/#{user}/#{application}"
+set :pid_file, "tmp/pids/server.pid"
 
 role :web, domain
 role :app, domain
 role :db,  domain, :primary => true # This is where Rails migrations will run
-#role :db,  "your slave db-server here"
 
 set :use_sudo, false
+set :whenever_command, "bundle exec whenever"
 
 namespace :deploy do
   task :start do
-    run "nohup bundle exec rails s -p 3001"
+    run "cd #{deploy_to}/current && nohup bundle exec rails s -p 3001 &"
   end
   task :stop do
-    run "kill -KILL `cat tmp/pids/server.pid`"
+    run "cd #{deploy_to}/current && if [ -f #{pid_file} ]; then kill -KILL $(cat #{pid_file}); fi"
   end
   task :restart, :roles => :app, :except => { :no_release => true } do
     stop
