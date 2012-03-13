@@ -1,8 +1,10 @@
+require 'bundler/capistrano'
 require "whenever/capistrano"
 
 set :application, "Trellolol"
-set :repository,  "git@github.com:KevinBongart/Trellolol.git"
+set :repository,  "http://github.com/KevinBongart/Trellolol.git"
 set :user, "trellolol"
+set :domain, "berman.challengepost.com"
 
 set :keep_releases, 3
 
@@ -11,11 +13,11 @@ set :branch, :master
 set :deploy_via, :remote_cache
 ssh_options[:forward_agent] = true
 
-set :deploy_to, "/var/www/#{application}"
+set :deploy_to, "/home/#{user}/#{application}"
 
-role :web, "192.168.8.40"
-role :app, "192.168.8.40"
-role :db,  "192.168.8.40", :primary => true # This is where Rails migrations will run
+role :web, domain
+role :app, domain
+role :db,  domain, :primary => true # This is where Rails migrations will run
 #role :db,  "your slave db-server here"
 
 set :use_sudo, false
