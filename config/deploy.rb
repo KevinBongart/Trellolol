@@ -25,7 +25,7 @@ set :whenever_command, "bundle exec whenever"
 
 namespace :deploy do
   task :start do
-    run "cd #{deploy_to}/current && nohup bundle exec rails s -p 3001 &"
+    run "cd #{deploy_to}/current && bundle exec rails s -p 3001 -d"
   end
   task :stop do
     run "cd #{deploy_to}/current && if [ -f #{pid_file} ]; then kill -KILL $(cat #{pid_file}); fi"
@@ -33,6 +33,9 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     stop
     start
+  end
+  task :copy_db do
+    run "cd #{deploy}/current; ln -s ../../shared/db"
   end
 end
 
@@ -42,4 +45,5 @@ namespace :logs do
   end
 end
 
-after "deploy", "deploy:migrate"
+before "deploy:migrate", "deploy:copy_db"
+before "deploy:start", "deploy:migrate"
