@@ -30,11 +30,17 @@ namespace :deploy do
   end
   task :stop do
     # send KILL signal to process named ruby owned by user
-    run "pkill -KILL -u #{user} ruby"
+    run "pkill -KILL -u #{user} ruby || echo 'It was just not running...'"
   end
   task :restart, :roles => :app, :except => { :no_release => true } do
     stop
     start
+  end
+end
+
+namespace :assets do
+  task :precompile do
+    run "cd #{current} && RAILS_ENV=production bundle exec rake assets:precompile"
   end
 end
 
@@ -45,4 +51,5 @@ namespace :logs do
 end
 
 before "deploy:start", "deploy:migrate"
+before "deploy:start", "assets:precompile"
 after "deploy:start", "deploy:cleanup"
