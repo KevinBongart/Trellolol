@@ -14,6 +14,7 @@ set :deploy_via, :remote_cache
 ssh_options[:forward_agent] = true
 
 set :deploy_to, "/home/#{user}/#{application}"
+set :current, "#{deploy_to}/current"
 set :pid_file, "tmp/pids/server.pid"
 
 role :web, domain
@@ -25,17 +26,14 @@ set :whenever_command, "bundle exec whenever"
 
 namespace :deploy do
   task :start do
-    run "cd #{deploy_to}/current && bundle exec rails s -p 3001 -d"
+    run "cd #{current} && bundle exec rails s -p 3001 -d"
   end
   task :stop do
-    run "cd #{deploy_to}/current && if [ -f #{pid_file} ]; then kill -KILL $(cat #{pid_file}); fi"
+    run "cd #{current} && if [ -f #{pid_file} ]; then kill -KILL $(cat #{pid_file}); fi"
   end
   task :restart, :roles => :app, :except => { :no_release => true } do
     stop
     start
-  end
-  task :copy_db do
-    run "cd #{deploy}/current; ln -s ../../shared/db"
   end
 end
 
@@ -45,5 +43,5 @@ namespace :logs do
   end
 end
 
-before "deploy:migrate", "deploy:copy_db"
 before "deploy:start", "deploy:migrate"
+after "deploy:start", "deploy:cleanup"
