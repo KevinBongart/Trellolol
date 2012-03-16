@@ -1,10 +1,12 @@
 == Trellolol
 
-Trellolol is a quick-and-dirty Rails app to learn more about your Trello boards.
+Trellolol is a quick-and-dirty Rails app to learn more about your Trello boards:
+
+http://f.cl.ly/items/0m0p3F2C402i0t1T0X1X/Screen%20Shot%202012-03-16%20at%202.52.54%20PM.png
 
 == Features
 
-So far, it only gives you the average time cards spend in each list of each board.
+So far, it gives you for each board the average time cards spend in each list and a cumulative flow diagram.
 
 == Usage
 
@@ -12,9 +14,13 @@ So far, it only gives you the average time cards spend in each list of each boar
 2. Go to https://trello.com/1/appKey/generate to generate your API key and click on the "Click here" link in the "Reading Private Data" section to request a token.
 3. Add your Trello your key and your token on http://localhost:3000/authorizations
 4. Run <tt>rake import</tt> to IMPORT ALL THE DATAS!!1
+5. Run <tt>rake compute_list_average_time</tt> to compute the average time cards spend in each list
+6. Run <tt>rake track_wip</tt> to import data in order to generate the cumulative flow diagrams
 5. Run <tt>rails s</tt>
 6. Go to http://localhost:3000/ and you'll see what you were looking for.
 
+A capistrano recipe makes it easy to deploy on a server and automatically adds cron jobs to import data daily.
+
 == Todo
 
-Get the API key and token via OAuth. Colors. Cumulative flow diagram. Tag cloud. Web 2.0. MySpace integration. TPS reports.
+Get the API key and token via OAuth. Colors. Tag cloud. Web 2.0. MySpace integration. TPS reports.
