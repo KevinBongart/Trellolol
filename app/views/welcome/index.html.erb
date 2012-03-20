@@ -7,7 +7,7 @@
 
   <ul>
     <% board.lists.each do |list| %>
-      <% unless list.count.zero? %>
+      <% unless list.count.nil? || list.count.zero? %>
         <li>
           Average time in
           <strong><%= list.name %></strong>:
