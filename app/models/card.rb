@@ -4,7 +4,7 @@ class Card < ActiveRecord::Base
   default_scope order('trello_id ASC')
 
   def self.create_from_trello_data(data)
-    Card.create(:trello_id => data['id'], :name => data['name'])
+    Card.create(:trello_id => data['id'], :name => data['name'], :board_id => data['idBoard'])
   end
 
   def self.fetch_from_trello(board)
@@ -24,11 +24,12 @@ class Card < ActiveRecord::Base
   end
 
   def completed?
-    self.actions.last.list_after && self.actions.last.list_after.name.match('Completed')
+    self.actions.last.list_after && self.actions.last.list_after.name.match('Done')
   end
 
   def time_to_completion
     return unless completed?
     self.actions.first.date - self.actions.last.date
   end
+
 end
