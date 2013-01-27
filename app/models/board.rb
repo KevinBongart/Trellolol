@@ -51,17 +51,25 @@ class Board < ActiveRecord::Base
 
   def compute_average_cycle_time
     total_cycle_time = 0
-    total_card_count = 0
     Card.all.each do |card|
       total_cycle_time = card.time_to_completion.to_i + total_cycle_time
-      total_card_count = total_card_count + 1
     end
     # If there are no cards found for the board, then average cycle time will calculate to zero
     # To do so elegantly, we need the division to equal "0/1" instead of "0/0"
-    unless total_card_count < 1
-   return total_cycle_time / total_card_count
+    if total_cards_completed > 0
+     return total_cycle_time / total_cards_completed
     else return 1
     end
+  end
+
+  def total_cards_completed
+    total_cards_done = 0
+    Card.all.each do |card|
+      unless card.completed?
+      total_cards_done += 1
+      end
+    end
+    return total_cards_done
   end
 
   def compute_throughput
