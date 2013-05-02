@@ -4,6 +4,7 @@ class Board < ActiveRecord::Base
 
   has_many :lists
   has_many :metric_groups
+  has_many :cards
 
   def self.create_from_trello_data(data)
     Board.create(:trello_id => data['id'], :name => data['name']) unless data['name'] == 'Welcome Board'
@@ -46,6 +47,40 @@ class Board < ActiveRecord::Base
     List.all.each do |list|
       list.update_attributes(:total_time => lists[list.id][:total_time], :count => lists[list.id][:count])
     end
+  end
+
+  def compute_average_cycle_time
+    total_cycle_time = 0
+    Card.all.each do |card|
+      total_cycle_time = card.time_to_completion.to_i + total_cycle_time
+    end
+    # If there are no cards found for the board, then average cycle time will calculate to zero
+    # To do so elegantly, we need the division to equal "0/1" instead of "0/0"
+    if total_cards_completed > 0
+     return total_cycle_time / total_cards_completed
+    else return 1
+    end
+  end
+
+  def total_cards_completed
+    total_cards_done = 0
+    Card.all.each do |card|
+      unless card.completed?
+      total_cards_done += 1
+      end
+    end
+    return total_cards_done
+  end
+
+  def compute_throughput
+    total_card_count = 0
+    min_date = Time.now
+    Card.all.each do |card|
+      min_date = [min_date,card.actions.first.date].min
+      total_card_count = total_card_count + 1
+    end
+      #return (total_card_count/(((Time.now - min_date).to_i)/(24*60*60)))/7
+      return (total_card_count/((Time.now - min_date).to_f/(24*60*60)))
   end
 
   def self.track_wip
